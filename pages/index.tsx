@@ -19,7 +19,8 @@ import { headerText } from "../settings"; // deleted image import philip
 import { useSolanaTime } from "@/utils/SolanaTimeContext";
 import { Link } from "@chakra-ui/react";
 //import Image from "next/image";
-
+//import { useEffect, useState } from 'react';
+import { getSingleImageLink } from '../utils/getSingleImage';
 
 
 const WalletMultiButtonDynamic = dynamic(
@@ -116,6 +117,9 @@ const useCandyMachine = (
 };
 
 export default function Home() {
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+  
   const umi = useUmi();
   const solanaTime = useSolanaTime();
   const toast = useToast();
@@ -163,6 +167,10 @@ export default function Home() {
   const { candyMachine, candyGuard } = useCandyMachine(umi, candyMachineId, checkEligibility, setCheckEligibility, firstRun, setFirstRun);
 
   useEffect(() => {
+    if (!isNaN(index)) {
+      getSingleImageLink(index).then(setImageUrl);
+    }
+
     const checkEligibilityFunc = async () => {
       if (!candyMachine || !candyGuard || !checkEligibility || isShowNftOpen) {
         return;
@@ -192,8 +200,10 @@ export default function Home() {
     checkEligibilityFunc();
   }, [umi, checkEligibility, firstRun]);
 
-  const imagePath = `/assets/${Number(candyMachine?.itemsRedeemed)}.png`;
 
+  const index = Number(candyMachine?.itemsRedeemed ?? 0);
+  //const imagePath = `/assets/${Number(candyMachine?.itemsRedeemed)}.png`;
+    //const imagePath = "https://gateway.irys.xyz/LEKruXxW3k3yK_8tNmF6bPBmPv42wLtf1woxjWP89UQ";
   const PageContent = () => {
     return (
       <>
@@ -247,17 +257,21 @@ export default function Home() {
             <CardBody>
               <Center>
                 <Box rounded="lg" mt={-8} pos="relative">
+                {imageUrl ? (
                   <Image
                     rounded="lg"
                     height={{ base: 180, md: 230 }}
                     width={{ base: 180, md: 230 }}
                     objectFit="cover"
                     alt="FARTCAT Image preview"
-                    src={imagePath} 
+                    src={imageUrl} 
                     border="4px solid"
                     borderColor="red.300"
                     shadow="5px 5px 1px 1px rgba(7, 7, 7, 0.2)"
                   />
+                ) : (
+                  <p className="text-center">Loading your NFT image...</p>
+                )}
                 </Box>
               </Center>
               <Stack divider={<StackDivider />} spacing={6} mt={6}>

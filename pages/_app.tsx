@@ -8,7 +8,7 @@ import { UmiProvider } from "../utils/UmiProvider";
 import "@/styles/globals.css";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import { ChakraProvider } from '@chakra-ui/react'
-import { image, headerText } from 'settings'
+import { headerText } from 'settings' //image
 import { SolanaTimeProvider } from "@/utils/SolanaTimeContext";
 import theme from "../styles/theme"; // Adjust path as needed
 
@@ -38,8 +38,8 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="description" content="FARTCAT CTO on Solana NFT Collection Mint" />
 
         <meta
-          property="og:image"
-          content={image}
+          //property="og:image"
+          //content={image}
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{headerText}</title>
